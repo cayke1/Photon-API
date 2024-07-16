@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto } from './dto/User.dto';
+import { UpdateUserDto } from './dto/User.dto';
 
 @Controller('users')
 export class UsersController {
@@ -17,11 +17,6 @@ export class UsersController {
   @Get()
   async findAll() {
     return this.usersService.getUsers();
-  }
-
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.createUser(createUserDto);
   }
 
   @Delete(':id')
