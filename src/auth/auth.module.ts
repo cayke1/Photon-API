@@ -31,7 +31,7 @@ import { PrismaService } from 'src/prisma.service';
     {
       provide: 'UsersRepository',
       useClass: ImplementationUserRepository,
-    }
+    },
   ],
   exports: [AuthService],
 })

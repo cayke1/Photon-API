@@ -15,7 +15,7 @@ export class ImplementationUserRepository implements UsersRepository {
           name: createUserDto.name,
         },
       });
-      
+
       return new_user;
     } catch (error) {
       return error;

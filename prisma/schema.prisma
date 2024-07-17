@@ -28,7 +28,6 @@ model Contact {
   id         String   @id @default(uuid())
   name       String
   email      String
-  phone      String
   createdAt  DateTime @default(now())
   lastUpdate DateTime @updatedAt
   User       User?    @relation(fields: [userId], references: [id])

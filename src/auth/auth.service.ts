@@ -59,4 +59,10 @@ export class AuthService {
       return { valid: false, error };
     }
   }
+
+  async getIdByToken(authHeader: string): Promise<string> {
+    const [, token] = authHeader.split(' ');
+    const decoded = this.jwtService.verify(token);
+    return decoded.sub;
+  }
 }
