@@ -1,5 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+} from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/User.dto';
 
@@ -18,7 +24,10 @@ export class UsersController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiParam({ name: 'id', type: 'string', description: 'The ID of the user' })
-  @ApiResponse({ status: 200, description: 'User has been successfully deleted.' })
+  @ApiResponse({
+    status: 200,
+    description: 'User has been successfully deleted.',
+  })
   @ApiResponse({ status: 404, description: 'User not found' })
   async delete(@Param('id') id: string) {
     return this.usersService.deleteUser(id);
@@ -33,11 +42,40 @@ export class UsersController {
     return this.usersService.getUserById(id);
   }
 
+  @Get('email')
+  @ApiOperation({ summary: 'Get a user by email' })
+  @ApiParam({
+    name: 'email',
+    type: 'string',
+    description: 'The email of the user',
+  })
+  @ApiResponse({ status: 200, description: 'Return the user.' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async findOneByEmail(@Param('email') email: string) {
+    return this.usersService.getUserByEmail(email);
+  }
+
+  @Get('username')
+  @ApiOperation({ summary: 'Get a user by username' })
+  @ApiParam({
+    name: 'username',
+    type: 'string',
+    description: 'The username of the user',
+  })
+  @ApiResponse({ status: 200, description: 'Return the user.' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async findOneByUsername(@Param('username') username: string) {
+    return this.usersService.findByUsername(username);
+  }
+
   @Put(':id')
   @ApiOperation({ summary: 'Update a user by ID' })
   @ApiParam({ name: 'id', type: 'string', description: 'The ID of the user' })
   @ApiBody({ type: UpdateUserDto })
-  @ApiResponse({ status: 200, description: 'User has been successfully updated.' })
+  @ApiResponse({
+    status: 200,
+    description: 'User has been successfully updated.',
+  })
   @ApiResponse({ status: 404, description: 'User not found' })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(id, updateUserDto);

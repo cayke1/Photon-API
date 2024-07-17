@@ -30,6 +30,7 @@ describe('UsersService', () => {
       name: 'Test User',
       email: 'test@example.com',
       password: 'password123',
+      username: '@testuser',
     };
     const result = await service.createUser(createUserDto);
     expect(result).toHaveProperty('id');
@@ -45,6 +46,7 @@ describe('UsersService', () => {
       name: 'Test User',
       email: 'test@example.com',
       password: 'password123',
+      username: '@testuser',
     };
     await service.createUser(createUserDto);
     try {
@@ -71,6 +73,7 @@ describe('UsersService', () => {
       name: 'Test User',
       email: 'test@email.com',
       password: 'password123',
+      username: '@testuser',
     };
     const user = await service.createUser(createUserDto);
     const updateUserDto = {
@@ -85,11 +88,32 @@ describe('UsersService', () => {
     }
   });
 
+  it('should not update a user when username is already registered', async () => {
+    const createUserDto = {
+      name: 'Test User',
+      email: 'test@email.com',
+      password: 'password123',
+      username: '@testuser',
+    };
+    const user = await service.createUser(createUserDto);
+    const updateUserDto = {
+      email: 'test2@email.com',
+      username: createUserDto.username,
+    };
+
+    try {
+      await service.updateUser(user.id, updateUserDto);
+    } catch (error) {
+      expect(error.message).toBe('Username already registered');
+    }
+  });
+
   it('should delete a user', async () => {
     const createUserDto = {
       name: 'Test User',
       email: 'test@email.com',
       password: 'password123',
+      username: '@testuser',
     };
     const user = await service.createUser(createUserDto);
     await service.deleteUser(user.id);

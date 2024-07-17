@@ -16,6 +16,12 @@ export class UsersService {
     if (userExists) {
       throw new ConflictError('Email already registered');
     }
+    const usernameExists = await this.usersRepository.findByUsername(
+      user.username,
+    );
+    if (usernameExists) {
+      throw new ConflictError('Username already registered');
+    }
     return this.usersRepository.createUser(user);
   }
 
@@ -31,6 +37,13 @@ export class UsersService {
     const emailExists = await this.usersRepository.getUserByEmail(user.email);
     if (emailExists) {
       throw new ConflictError('Email already registered');
+    }
+
+    const usernameExists = await this.usersRepository.findByUsername(
+      user.username,
+    );
+    if (usernameExists) {
+      throw new ConflictError('Username already registered');
     }
     return this.usersRepository.updateUser(userId, user);
   }
@@ -53,6 +66,14 @@ export class UsersService {
 
   async getUserByEmail(email: string) {
     const user = await this.usersRepository.getUserByEmail(email);
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+    return user;
+  }
+
+  async findByUsername(username: string) {
+    const user = await this.usersRepository.findByUsername(username);
     if (!user) {
       throw new NotFoundError('User not found');
     }

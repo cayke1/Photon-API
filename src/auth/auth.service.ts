@@ -31,6 +31,25 @@ export class AuthService {
         sub: user.id,
         email: user.email,
         name: user.name,
+        username: user.username,
+      };
+
+      return {
+        access_token: this.jwtService.sign(payload),
+      };
+    }
+
+    return null;
+  }
+
+  async loginWithUsername(username: string, password: string): Promise<any> {
+    const user = await this.usersService.findByUsername(username);
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const payload = {
+        sub: user.id,
+        email: user.email,
+        name: user.name,
+        username: user.username,
       };
 
       return {

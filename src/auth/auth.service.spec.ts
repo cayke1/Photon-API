@@ -37,6 +37,7 @@ describe('AuthService', () => {
       name: 'Test User',
       email: 'test@mail.com',
       password: 'password123',
+      username: '@testuser',
     };
 
     const result = await service.signup(createUserDto);
@@ -53,6 +54,7 @@ describe('AuthService', () => {
       name: 'Test User',
       email: 'test@email.com',
       password: 'password123',
+      username: '@testuser',
     };
 
     await service.signup(createUserDto);

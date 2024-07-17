@@ -12,6 +12,7 @@ export class ImplementationUserRepository implements UsersRepository {
         data: {
           email: createUserDto.email,
           password: createUserDto.password,
+          username: createUserDto.username,
           name: createUserDto.name,
         },
       });
@@ -83,6 +84,19 @@ export class ImplementationUserRepository implements UsersRepository {
       return user;
     } catch (error) {
       return null;
+    }
+  }
+
+  async findByUsername(username: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          username: username,
+        },
+      });
+      return user;
+    } catch (error) {
+      return error;
     }
   }
 }

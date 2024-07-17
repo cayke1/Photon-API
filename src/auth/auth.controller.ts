@@ -35,19 +35,31 @@ export class AuthController {
   @ApiOperation({ summary: 'Login user' })
   @ApiBody({
     schema: {
-      properties: { email: { type: 'string' }, password: { type: 'string' } },
+      properties: {
+        identifier: { type: 'string' },
+        password: { type: 'string' },
+      },
     },
   })
   @ApiResponse({ status: 200, description: 'Login successful' })
   @ApiResponse({ status: 404, description: 'User not found' })
   async signin(
-    @Body('email') email: string,
+    @Body('identifier') identifier: string,
     @Body('password') password: string,
     @Res() res: Response,
   ) {
-    const response = await this.authService.login(email, password);
-    if (!response) return res.status(404).json({ status: 'User not found' });
-    return res.status(200).json(response);
+    if (this.checkIfEmailIsValid(identifier)) {
+      const response = await this.authService.login(identifier, password);
+      if (!response) return res.status(404).json({ status: 'User not found' });
+      return res.status(200).json(response);
+    } else {
+      const response = await this.authService.loginWithUsername(
+        identifier,
+        password,
+      );
+      if (!response) return res.status(404).json({ status: 'User not found' });
+      return res.status(200).json(response);
+    }
   }
 
   @Public()
@@ -68,5 +80,10 @@ export class AuthController {
     } else {
       return { valid: false, error: result.error.message };
     }
+  }
+
+  private checkIfEmailIsValid(identifier: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(identifier);
   }
 }

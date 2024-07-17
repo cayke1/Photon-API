@@ -10,6 +10,13 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty({
+    example: '@johndoe',
+    description: 'The username of the user',
+  })
+  @IsString()
+  username: string;
+
+  @ApiProperty({
     example: 'password',
     description: 'The password of the user',
   })
@@ -41,4 +48,12 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   name?: string;
+
+  @ApiProperty({
+    example: '@johndoe',
+    description: 'The username of the user',
+  })
+  @IsString()
+  @IsOptional()
+  username?: string;
 }
