@@ -1,4 +1,4 @@
-import { Contact } from '@prisma/client';
+import { Contact } from '../../@types/Contact';
 import { ContactsRepository } from './ContactsRepository';
 import { CreateContactDto, UpdateContactDto } from '../dto/Contact.dto';
 
